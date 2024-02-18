@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <raylib.h>
 
 #define ZERO_PAGE_START 0x0000
@@ -30,17 +31,19 @@ enum ControlFlags
 int 
 main(void)
 {
-    unsigned char ram[65536] = { 0 };
-    unsigned short pc = 0x0000;
+    uint8_t ram[65536] = { 0 };
+    uint16_t pc = 0x0000;
 
-    unsigned char sp = 0xFF;
-    unsigned char acc = 0x00;
-    unsigned char indx = 0x00;
-    unsigned char indy = 0x00;
-    unsigned char status = 0x00;
-    unsigned char opcode = 0x00;
+    uint8_t sp = 0xFF;
+    uint8_t acc = 0x00;
+    uint8_t indx = 0x00;
+    uint8_t indy = 0x00;
+    uint8_t status = 0x00;
+    uint8_t opcode = 0x00;
 
-    unsigned short temp = 0x0000;
+    uint16_t temp = 0x0000;
+
+    /* TODO: ROM loading */
 
     InitWindow(640, 480, "jNES");
 
@@ -293,61 +296,48 @@ main(void)
             /* Zero page */
             case 0x85:
                 ram[ram[pc + 1]] = acc;
-
                 pc += 2;
                 break;
 
             /* Zero page, X */
             case 0x95:
                 temp = (ram[pc + 1] + indx) & 0xFF;
-
                 ram[temp] = acc;
-
                 pc += 2;
                 break;
 
             /* Absolute */
             case 0x8D:
                 temp = (ram[pc + 1]) + (ram[pc + 2] << 8);
-
                 ram[temp] = acc;
-
                 pc += 3;
                 break;
 
             /* Absolute, X */
             case 0x9D:
                 temp = (ram[pc + 1]) + (ram[pc + 2] << 8);
-
                 ram[temp + indx] = acc;
-
                 pc += 3;
                 break;
 
             /* Absolute, Y */
             case 0x99:
                 temp = (ram[pc + 1]) + (ram[pc + 2] << 8);
-
                 ram[temp + indy] = acc;
-
                 pc += 3;
                 break;
 
             /* (Indirect, X) */
             case 0x81:
                 temp = (ram[pc + 1] + indx) & 0xFF;
-
                 ram[temp] = acc;
-
                 pc += 2;
                 break;
 
             /* (Indirect), Y */
             case 0x91:
                 temp = ram[pc + 1];
-
                 ram[ram[temp] + indy] = acc;
-
                 pc += 2;
                 break;
 
@@ -355,25 +345,20 @@ main(void)
             /* Zero page */
             case 0x86:
                 ram[ram[pc + 1]] = indx;
-
                 pc += 2;
                 break;
 
             /* Zero page, Y */
             case 0x96:
                 temp = (ram[pc + 1] + indy) & 0xFF;
-
                 ram[temp] = indx;
-
                 pc += 2;
                 break;
 
             /* Absolute */
             case 0x8E:
                 temp = (ram[pc + 1]) + (ram[pc + 2] << 8);
-
                 ram[temp] = indx;
-
                 pc += 3;
                 break;
 
@@ -381,25 +366,20 @@ main(void)
             /* Zero page */
             case 0x84:
                 ram[ram[pc + 1]] = indy;
-
                 pc += 2;
                 break;
 
             /* Zero page, X */
             case 0x94:
                 temp = (ram[pc + 1] + indx) & 0xFF;
-
                 ram[temp] = indy;
-
                 pc += 2;
                 break;
 
             /* Absolute */
             case 0x8C:
                 temp = (ram[pc + 1]) + (ram[pc + 2] << 8);
-
                 ram[temp] = indy;
-
                 pc += 3;
                 break;
 
@@ -880,37 +860,148 @@ main(void)
                 pc += 3;
                 break;
 
+            /* TODO: Overflow flag */
             /* Add with carry (ADC) */
             /* Immediate mode */
             case 0x69:
+                temp = acc + ram[pc + 1] + (status & CARRY_FLAG);
+
+                if (temp > 0xFF)
+                    status |= CARRY_FLAG;
+
+                acc = temp;
+
+                if (acc == 0)
+                    status |= ZERO_FLAG;
+                else if ((acc & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 2;
                 break;
 
             /* Zero Page */
             case 0x65:
+                temp = acc + ram[ram[pc + 1]] + (status & CARRY_FLAG);
+
+                if (temp > 0xFF)
+                    status |= CARRY_FLAG;
+
+                acc = temp;
+
+                if (acc == 0)
+                    status |= ZERO_FLAG;
+                else if ((acc & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 2;
                 break;
 
             /* Zero Page, X */
             case 0x75:
+                temp = acc + (ram[ram[pc + 1] + indx] & 0xFF)
+                       + (status & CARRY_FLAG);
+
+                if (temp > 0xFF)
+                    status |= CARRY_FLAG;
+
+                acc = temp;
+
+                if (acc == 0)
+                    status |= ZERO_FLAG;
+                else if ((acc & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 2;
                 break;
 
             /* Absolute */
             case 0x6D:
+                temp = acc + (ram[pc + 1] + (ram[pc + 2] << 8))
+                       + (status & CARRY_FLAG);
+
+                if (temp > 0xFF)
+                    status |= CARRY_FLAG;
+
+                acc = temp;
+
+                if (acc == 0)
+                    status |= ZERO_FLAG;
+                else if ((acc & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 3;
                 break;
 
             /* Absolute, X */
             case 0x7D:
+                temp = acc + (ram[pc + 1] + (ram[pc + 2] << 8) + indx)
+                       + (status & CARRY_FLAG);
+
+                if (temp > 0xFF)
+                    status |= CARRY_FLAG;
+
+                acc = temp;
+
+                if (acc == 0)
+                    status |= ZERO_FLAG;
+                else if ((acc & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 3;
                 break;
 
             /* Absolute, Y */
             case 0x79:
+                temp = acc + (ram[pc + 1] + (ram[pc + 2] << 8) + indy)
+                       + (status & CARRY_FLAG);
+
+                if (temp > 0xFF)
+                    status |= CARRY_FLAG;
+
+                acc = temp;
+
+                if (acc == 0)
+                    status |= ZERO_FLAG;
+                else if ((acc & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 3;
                 break;
 
             /* (Indirect, X) */
             case 0x61:
+                temp = acc + (ram[ram[(ram[pc + 1] + indx) & 0xFF]])
+                       + (status & CARRY_FLAG);
+
+                if (temp > 0xFF)
+                    status |= CARRY_FLAG;
+
+                acc = temp;
+
+                if (acc == 0)
+                    status |= ZERO_FLAG;
+                else if ((acc & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 2;
                 break;
 
             /* (Indirect), Y */
             case 0x71:
+                temp = acc + (ram[ram[ram[pc + 1]] + indy])
+                       + (status & CARRY_FLAG);
+
+                if (temp > 0xFF)
+                    status |= CARRY_FLAG;
+
+                acc = temp;
+
+                if (acc == 0)
+                    status |= ZERO_FLAG;
+                else if ((acc & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 2;
                 break;
 
             /* Subtract with Carry (SBC) */
@@ -1067,7 +1158,7 @@ main(void)
                 pc += 2;
                 break;
 
-            /* Compare X Register */
+            /* Compare X Register (CPX) */
             /* Immediate */
             case 0xE0:
                 temp = ram[pc + 1];
@@ -1297,7 +1388,7 @@ main(void)
                 pc += 3;
                 break;
 
-            /* Decrement X Register */
+            /* Decrement X Register (DEX) */
             case 0xCA:
                 indx--;
 
@@ -1309,7 +1400,7 @@ main(void)
                 pc++;
                 break;
 
-            /* Decrement Y Register */
+            /* Decrement Y Register (DEY) */
             case 0x88:
                 indy--;
 
@@ -1324,6 +1415,7 @@ main(void)
             /* Arithmetic Shift Left (ASL) */
             /* Accumulator */
             case 0x0A:
+
                 break;
 
             /* Zero page */
@@ -1432,7 +1524,7 @@ main(void)
             /* Branch if Carry Clear (BCC) */
             case 0x90:
                 if ((status & CARRY_FLAG) == 0)
-                    pc += (signed char)ram[pc + 1];
+                    pc += (int8_t)ram[pc + 1];
 
                 pc += 2;
                 break;
@@ -1440,7 +1532,7 @@ main(void)
             /* Branch if Carry Set (BCS) */
             case 0xB0:
                 if ((status & CARRY_FLAG) != 0)
-                    pc += (signed char)ram[pc + 1];
+                    pc += (int8_t)ram[pc + 1];
 
                 pc += 2;
                 break;
@@ -1448,7 +1540,7 @@ main(void)
             /* Branch if Equal (BEQ) */
             case 0xF0:
                 if ((status & ZERO_FLAG) != 0)
-                    pc += (signed char)ram[pc + 1];
+                    pc += (int8_t)ram[pc + 1];
 
                 pc += 2;
                 break;
@@ -1456,7 +1548,7 @@ main(void)
             /* Branch if Minus (BMI) */
             case 0x30:
                 if ((status & NEGATIVE_FLAG) != 0)
-                    pc += (signed char)ram[pc + 1];
+                    pc += (int8_t)ram[pc + 1];
 
                 pc += 2;
                 break;
@@ -1464,7 +1556,7 @@ main(void)
             /* Branch if Not Equal (BNE) */
             case 0xD0:
                 if ((status & ZERO_FLAG) == 0)
-                    pc += (signed char)ram[pc + 1];
+                    pc += (int8_t)ram[pc + 1];
 
                 pc += 2;
                 break;
@@ -1472,7 +1564,7 @@ main(void)
             /* Branch if Positive (BPL) */
             case 0x10:
                 if ((status & NEGATIVE_FLAG) == 0)
-                    pc += (signed char)ram[pc + 1];
+                    pc += (int8_t)ram[pc + 1];
 
                 pc += 2;
                 break;
@@ -1480,7 +1572,7 @@ main(void)
             /* Branch if Overflow Clear (BVC) */
             case 0x50:
                 if ((status & OVERFLOW_FLAG) == 0)
-                    pc += (signed char)ram[pc + 1];
+                    pc += (int8_t)ram[pc + 1];
 
                 pc += 2;
                 break;
@@ -1488,7 +1580,7 @@ main(void)
             /* Branch if Overflow Set (BVS) */
             case 0x70:
                 if ((status & OVERFLOW_FLAG) != 0)
-                    pc += (signed char)ram[pc + 1];
+                    pc += (int8_t)ram[pc + 1];
 
                 pc += 2;
                 break;
@@ -1543,10 +1635,11 @@ main(void)
             case 0xEA:
                 break;
 
-            /* Return from Interrupt */
+            /* Return from Interrupt (RTI) */
             case 0x40:
                 break;
 
+            /* TODO: Add the non-standard opcodes here */
             default:
                 fprintf(stderr, "Error: Unrecognized opcode %04x at 0x%04x\n",
                         opcode, pc);
