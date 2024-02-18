@@ -20,6 +20,13 @@ enum ControlFlags
 
 /* TODO: Check if the flags should be set to 0 if they aren't set to 1 */
 
+/**
+ * TODO: Am I supposed to increment the program counter by one for each
+ * instruction?
+ */
+
+/* TODO: How do I draw anything? Also, audio and controllers */
+
 int 
 main(void)
 {
@@ -469,6 +476,7 @@ main(void)
                 break;
 
             /* Push Accumulator (PHA) */
+            /* TODO: Give a CLI warning if there's a stack overflow */
             case 0x48:
                 ram[sp + 0x0100] = acc;
                 sp--;
@@ -1105,7 +1113,7 @@ main(void)
                 pc += 3;
                 break;
 
-            /* Compare Y Register */
+            /* Compare Y Register (CPY) */
             /* Immediate */
             case 0xC0:
                 temp = ram[pc + 1];
@@ -1235,26 +1243,82 @@ main(void)
             /* Decrement Memory (DEC) */
             /* Zero page */
             case 0xC6:
+                temp = ram[pc + 1];
+                ram[temp]--;
+                temp = ram[temp];
+
+                if (temp == 0)
+                    status |= ZERO_FLAG;
+                else if ((temp & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 2;
                 break;
 
             /* Zero page, X */
             case 0xD6:
+                temp = (ram[pc + 1] + indx) & 0xFF;
+                ram[temp]--;
+                temp = ram[temp];
+
+                if (temp == 0)
+                    status |= ZERO_FLAG;
+                else if ((temp & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 2;
                 break;
 
             /* Absolute */
             case 0xCE:
+                temp = ram[pc + 1] + (ram[pc + 2] << 8);
+                ram[temp]--;
+                temp = ram[temp];
+
+                if (temp == 0)
+                    status |= ZERO_FLAG;
+                else if ((temp & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 3;
                 break;
 
             /* Absolute, X */
             case 0xDE:
+                temp = ram[pc + 1] + (ram[pc + 2] << 8) + indx;
+                ram[temp]--;
+                temp = ram[temp];
+
+                if (temp == 0)
+                    status |= ZERO_FLAG;
+                else if ((temp & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc += 3;
                 break;
 
             /* Decrement X Register */
             case 0xCA:
+                indx--;
+
+                if (indx == 0)
+                    status |= ZERO_FLAG;
+                else if((indx & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc++;
                 break;
 
             /* Decrement Y Register */
             case 0x88:
+                indy--;
+
+                if (indy == 0)
+                    status |= ZERO_FLAG;
+                else if((indy & 0x80) != 0)
+                    status |= NEGATIVE_FLAG;
+
+                pc++;
                 break;
 
             /* Arithmetic Shift Left (ASL) */
@@ -1299,7 +1363,7 @@ main(void)
             case 0x5E:
                 break;
 
-            /* Rotate Left */
+            /* Rotate Left (ROL) */
             /* Accumulator */
             case 0x2A:
                 break;
@@ -1344,18 +1408,25 @@ main(void)
             /* Jump (JMP) */
             /* Absolute */
             case 0x4C:
+                pc = ram[pc + 1] + (ram[pc + 2] << 8);
                 break;
 
             /* Indirect */
             case 0x6C:
+                pc = ram[ram[pc + 1]] + (ram[ram[pc + 1] + 1] << 8);
                 break;
 
-            /* Jump to Subroutine */
+            /* Jump to Subroutine (JSR) */
             case 0x20:
+                ram[sp] = pc;
+                sp--;
+                pc = ram[pc + 1] + (ram[pc + 2] << 8);
                 break;
 
             /* Return from Subroutine (RTS) */
             case 0x60:
+                pc = ram[sp] - 1;
+                sp++;
                 break;
 
             /* Branch if Carry Clear (BCC) */
@@ -1425,49 +1496,42 @@ main(void)
             /* Clear Carry Flag (CLC) */
             case 0x18:
                 status &= ~CARRY_FLAG;
-
                 pc++;
                 break;
 
             /* Clear Decimal Flag (CLD) */
             case 0xD8:
                 status &= ~DECIMAL_MODE;
-
                 pc++;
                 break;
 
             /* Clear Interrupt Disable (CLI) */
             case 0x58:
                 status &= ~INTERRUPT_DISABLE;
-
                 pc++;
                 break;
 
             /* Clear Overflow Flag (CLV) */
             case 0xB8:
                 status &= ~OVERFLOW_FLAG;
-
                 pc++;
                 break;
 
             /* Set Carry Flag (SEC) */
             case 0x38:
                 status |= CARRY_FLAG;
-
                 pc++;
                 break;
 
             /* Set Decimal Flag (SED) */
             case 0xF8:
                 status |= DECIMAL_MODE;
-
                 pc++;
                 break;
 
             /* Set Interrupt Disable (SEI) */
             case 0x78:
                 status |= INTERRUPT_DISABLE;
-
                 pc++;
                 break;
 
