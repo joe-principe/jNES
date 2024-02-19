@@ -10,13 +10,13 @@
 
 enum ControlFlags
 {
-    CARRY_FLAG = 1,
-    ZERO_FLAG = 2,
+    CARRY_FLAG        = 1,
+    ZERO_FLAG         = 2,
     INTERRUPT_DISABLE = 4,
-    DECIMAL_MODE = 8,
-    BREAK_COMMAND = 16,
-    OVERFLOW_FLAG = 32,
-    NEGATIVE_FLAG = 64
+    DECIMAL_MODE      = 8,
+    BREAK_COMMAND     = 16,
+    OVERFLOW_FLAG     = 64,
+    NEGATIVE_FLAG     = 128
 };
 
 /* TODO: Check if the flags should be set to 0 if they aren't set to 1 */
@@ -56,7 +56,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -68,7 +68,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -82,7 +82,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -96,7 +96,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -110,7 +110,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -124,7 +124,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -138,7 +138,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -152,7 +152,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -165,7 +165,7 @@ main(void)
 
                 if (indx == 0)
                     status |= ZERO_FLAG;
-                else if ((indx & 0x80) != 0)
+                else if ((indx & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -177,7 +177,7 @@ main(void)
 
                 if (indx == 0)
                     status |= ZERO_FLAG;
-                else if ((indx & 0x80) != 0)
+                else if ((indx & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -191,7 +191,7 @@ main(void)
 
                 if (indx == 0)
                     status |= ZERO_FLAG;
-                else if ((indx & 0x80) != 0)
+                else if ((indx & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -205,7 +205,7 @@ main(void)
 
                 if (indx == 0)
                     status |= ZERO_FLAG;
-                else if ((indx & 0x80) != 0)
+                else if ((indx & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -219,7 +219,7 @@ main(void)
 
                 if (indx == 0)
                     status |= ZERO_FLAG;
-                else if ((indx & 0x80) != 0)
+                else if ((indx & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -232,7 +232,7 @@ main(void)
 
                 if (indy == 0)
                     status |= ZERO_FLAG;
-                else if ((indy & 0x80) != 0)
+                else if ((indy & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -244,7 +244,7 @@ main(void)
 
                 if (indy == 0)
                     status |= ZERO_FLAG;
-                else if ((indy & 0x80) != 0)
+                else if ((indy & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -258,7 +258,7 @@ main(void)
 
                 if (indy == 0)
                     status |= ZERO_FLAG;
-                else if ((indy & 0x80) != 0)
+                else if ((indy & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -272,7 +272,7 @@ main(void)
 
                 if (indy == 0)
                     status |= ZERO_FLAG;
-                else if ((indy & 0x80) != 0)
+                else if ((indy & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -286,7 +286,7 @@ main(void)
 
                 if (indy == 0)
                     status |= ZERO_FLAG;
-                else if ((indy & 0x80) != 0)
+                else if ((indy & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -389,7 +389,7 @@ main(void)
 
                 if (indx == 0)
                     status |= ZERO_FLAG;
-                else if ((indx & 0x80) != 0)
+                else if ((indx & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -401,7 +401,7 @@ main(void)
 
                 if (indy == 0)
                     status |= ZERO_FLAG;
-                else if ((indy & 0x80) != 0)
+                else if ((indy & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -413,7 +413,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -425,7 +425,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -437,7 +437,7 @@ main(void)
 
                 if (indx == 0)
                     status |= ZERO_FLAG;
-                else if ((indx & 0x80) != 0)
+                else if ((indx & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -449,7 +449,7 @@ main(void)
 
                 if (sp == 0)
                     status |= ZERO_FLAG;
-                else if ((sp & 0x80) != 0)
+                else if ((sp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -477,7 +477,7 @@ main(void)
 
                 if (acc == 0)
                     status |= CARRY_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -498,7 +498,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -511,7 +511,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -532,7 +532,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -547,7 +547,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -561,7 +561,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -575,7 +575,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -589,7 +589,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -603,7 +603,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -616,7 +616,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -628,7 +628,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -642,7 +642,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -656,7 +656,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -670,7 +670,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -684,7 +684,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -698,7 +698,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -712,7 +712,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -725,7 +725,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -737,7 +737,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -751,7 +751,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -765,7 +765,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -779,7 +779,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -793,7 +793,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -807,7 +807,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -821,7 +821,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -839,7 +839,7 @@ main(void)
 
                 /* TODO: Is this even correct? */
                 status |= (temp & 0x40) << 1;
-                status |= (temp & 0x80) << 1;
+                status |= (temp & NEGATIVE_FLAG) << 1;
 
                 pc += 2;
                 break;
@@ -855,7 +855,7 @@ main(void)
 
                 /* TODO: Is this even correct? */
                 status |= (temp & 0x40) << 1;
-                status |= (temp & 0x80) << 1;
+                status |= (temp & NEGATIVE_FLAG) << 1;
 
                 pc += 3;
                 break;
@@ -873,7 +873,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -890,7 +890,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -908,7 +908,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -926,7 +926,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -944,7 +944,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -962,7 +962,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -980,7 +980,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -998,7 +998,7 @@ main(void)
 
                 if (acc == 0)
                     status |= ZERO_FLAG;
-                else if ((acc & 0x80) != 0)
+                else if ((acc & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1047,7 +1047,7 @@ main(void)
                 else if (acc == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1062,7 +1062,7 @@ main(void)
                 else if (acc == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1077,7 +1077,7 @@ main(void)
                 else if (acc == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1092,7 +1092,7 @@ main(void)
                 else if (acc == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -1107,7 +1107,7 @@ main(void)
                 else if (acc == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -1122,7 +1122,7 @@ main(void)
                 else if (acc == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -1137,7 +1137,7 @@ main(void)
                 else if (acc == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1152,7 +1152,7 @@ main(void)
                 else if (acc == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1168,7 +1168,7 @@ main(void)
                 else if (indx == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1183,7 +1183,7 @@ main(void)
                 else if (indx == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1198,7 +1198,7 @@ main(void)
                 else if (indx == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -1214,7 +1214,7 @@ main(void)
                 else if (indy == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1229,7 +1229,7 @@ main(void)
                 else if (indy == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1244,7 +1244,7 @@ main(void)
                 else if (indy == temp)
                     status |= ZERO_FLAG;
 
-                if ((temp & 0x80) != 0)
+                if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -1259,7 +1259,7 @@ main(void)
 
                 if (temp == 0)
                     status |= ZERO_FLAG;
-                else if ((temp & 0x80) != 0)
+                else if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1273,7 +1273,7 @@ main(void)
 
                 if (temp == 0)
                     status |= ZERO_FLAG;
-                else if ((temp & 0x80) != 0)
+                else if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1287,7 +1287,7 @@ main(void)
 
                 if (temp == 0)
                     status |= ZERO_FLAG;
-                else if ((temp & 0x80) != 0)
+                else if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -1301,7 +1301,7 @@ main(void)
 
                 if (temp == 0)
                     status |= ZERO_FLAG;
-                else if ((temp & 0x80) != 0)
+                else if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -1313,7 +1313,7 @@ main(void)
 
                 if (indx == 0)
                     status |= ZERO_FLAG;
-                else if ((indx & 0x80) != 0)
+                else if ((indx & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -1325,7 +1325,7 @@ main(void)
 
                 if (indy == 0)
                     status |= ZERO_FLAG;
-                else if ((indy & 0x80) != 0)
+                else if ((indy & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -1340,7 +1340,7 @@ main(void)
 
                 if (temp == 0)
                     status |= ZERO_FLAG;
-                else if ((temp & 0x80) != 0)
+                else if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1354,7 +1354,7 @@ main(void)
 
                 if (temp == 0)
                     status |= ZERO_FLAG;
-                else if ((temp & 0x80) != 0)
+                else if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 2;
@@ -1368,7 +1368,7 @@ main(void)
 
                 if (temp == 0)
                     status |= ZERO_FLAG;
-                else if ((temp & 0x80) != 0)
+                else if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -1382,7 +1382,7 @@ main(void)
 
                 if (temp == 0)
                     status |= ZERO_FLAG;
-                else if ((temp & 0x80) != 0)
+                else if ((temp & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc += 3;
@@ -1394,7 +1394,7 @@ main(void)
 
                 if (indx == 0)
                     status |= ZERO_FLAG;
-                else if((indx & 0x80) != 0)
+                else if ((indx & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -1406,7 +1406,7 @@ main(void)
 
                 if (indy == 0)
                     status |= ZERO_FLAG;
-                else if((indy & 0x80) != 0)
+                else if ((indy & NEGATIVE_FLAG) != 0)
                     status |= NEGATIVE_FLAG;
 
                 pc++;
@@ -1629,20 +1629,36 @@ main(void)
 
             /* Force interrupt (BRK) */
             case 0x00:
+                /* TODO: wtf am I supposed to do with this for an emulator? */
+                status |= BREAK_COMMAND;
+                ram[sp + 0x0100] = pc;
+                sp--;
+
+                ram[sp + 0x0100] = status;
+                sp--;
+
+                pc = 0xFFFE;
                 break;
 
             /* No Operation (NOP) */
             case 0xEA:
+                pc++;
                 break;
 
             /* Return from Interrupt (RTI) */
             case 0x40:
+                status = ram[sp + 0x0100];
+                sp++;
+
+                pc = ram[sp + 0x0100];
+                sp++;
                 break;
 
             /* TODO: Add the non-standard opcodes here */
             default:
                 fprintf(stderr, "Error: Unrecognized opcode %04x at 0x%04x\n",
                         opcode, pc);
+                pc++;
                 break;
         }
 
